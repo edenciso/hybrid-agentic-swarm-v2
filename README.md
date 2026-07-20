@@ -25,7 +25,7 @@ flowchart TB
 
 ## What's in v2
 
-v2 merges the two v1 documents — the formal four-plane reference architecture with its interface contract spec, and the conceptual architecture built on the containment principle — and substitutes **Hermes Agent** for OpenClaw as the deterministic orchestration runtime. The swap brings native equivalents for things v1 specified externally: Bitwarden-scoped credentials, terminal-backend sandboxing (Docker/Modal/Daytona), promptware/injection defense at three chokepoints, a messaging gateway for human approvals, per-task model overrides for the cheap-worker/heavy-reasoner split, and Atropos RL + trajectory export as the Layer 3 training substrate. Full details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/CONTRACTS.md](docs/CONTRACTS.md) · [docs/MIGRATION_V1_TO_V2.md](docs/MIGRATION_V1_TO_V2.md).
+The formal four-plane reference architecture with its interface contract spec, and the conceptual architecture built on the containment principle — and substitutes **Hermes Agent** for OpenClaw as the deterministic orchestration runtime. The swap brings native equivalents for things v1 specified externally: Bitwarden-scoped credentials, terminal-backend sandboxing (Docker/Modal/Daytona), promptware/injection defense at three chokepoints, a messaging gateway for human approvals, per-task model overrides for the cheap-worker/heavy-reasoner split, and Atropos RL + trajectory export as the Layer 3 training substrate. Full details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/CONTRACTS.md](docs/CONTRACTS.md) · [docs/MIGRATION_V1_TO_V2.md](docs/MIGRATION_V1_TO_V2.md).
 
 The reference implementation in `src/has/` is pure Python standard library — no dependencies — and runs the entire loop: mission intake, governed spawn, multi-channel pheromone field with decay/diffusion/saturate-guard and poisoning defenses, ACO routers + PSO tuner + scouts + sentinels, difference rewards, OPA-shaped policy decisions with action classes 0–5, human approval gates, circuit breakers, governed memory writes, and JSONL replay telemetry.
 
@@ -34,12 +34,12 @@ The reference implementation in `src/has/` is pure Python standard library — n
 Requires Python ≥ 3.10. Nothing to install.
 
 ```bash
-git clone https://github.com/<you>/has-v2.git
-cd has-v2
+git clone https://github.com/edenciso/hybrid-agentic-swarm-v2.git
+cd hybrid-agentic-swarm-v2
 python examples/quickstart_dispatch.py
 ```
 
-The quickstart runs the storm-restoration dispatch scenario from the v1 contracts: four repair crews, eight storm-damaged zones differing in outage severity, travel time, and hazard. Scouts raise evidence, sentinels write the risk channel, a PSO tuner shapes the routing heuristic, ACO routers converge on an assignment, and the reward engine scores candidates with per-crew difference rewards. The winning recommendation is a class-4 (bounded real-world) action, so the policy engine routes it through a human approval gate before the tool broker commits it; the outcome persists to governed memory, and every event lands in `runs/<mission_id>.jsonl` for replay. Expected output ends like this:
+The quickstart runs a storm-restoration dispatch scenario: four repair crews, eight storm-damaged zones differing in outage severity, travel time, and hazard. Scouts raise evidence, sentinels write the risk channel, a PSO tuner shapes the routing heuristic, ACO routers converge on an assignment, and the reward engine scores candidates with per-crew difference rewards. The winning recommendation is a class-4 (bounded real-world) action, so the policy engine routes it through a human approval gate before the tool broker commits it; the outcome persists to governed memory, and every event lands in `runs/<mission_id>.jsonl` for replay. Expected output ends like this:
 
 ```text
 swarm recommendation rec_...
