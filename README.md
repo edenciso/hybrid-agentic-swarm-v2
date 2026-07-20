@@ -1,6 +1,6 @@
 # Hybrid Agentic Swarm (HAS) — Reference Architecture v2
 
-**Deterministic orchestration as an envelope, emergence inside it.** HAS couples a governed control plane — **Hermes Agent (Nous Research)** in v2 — with a decentralized swarm-intelligence layer, through exactly one medium: a stigmergic (pheromone-field) substrate. Orchestration owns invariants, budgets, permissions, and kill authority; the swarm owns search, adaptation, and local decisions; a policy plane decides what may become real; an observability plane remembers everything important.
+**Deterministic multi-agent orchestration as an envelope, swarm emergence inside it.** HAS couples a governed control plane — **Hermes Agent (Nous Research)** in v2 — with a decentralized swarm-intelligence layer, through exactly one medium: a stigmergic (pheromone-field) substrate. Orchestration owns invariants, budgets, permissions, and kill authority; the swarm owns search, adaptation, and local decisions; a policy plane decides what may become real; an observability plane remembers everything important.
 
 ```mermaid
 flowchart TB
