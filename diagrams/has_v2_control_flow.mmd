@@ -1,0 +1,56 @@
+%% HAS v2 — end-to-end control flow
+%% v2 of the v1 sequence diagram; Master/Planner/Safety/Memory agents run
+%% as governed Hermes subagents.
+
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant MI as Mission Intake
+    participant MA as Master Agent (Hermes)
+    participant PA as Planner Agent
+    participant SA as Safety Agent
+    participant SB as Swarm Mission Broker
+    participant FS as Field Substrate
+    participant SW as Swarm Workers
+    participant PE as Policy Engine (OPA)
+    participant TB as Tool Broker
+    participant AP as Approval Service
+    participant MC as Memory Curator
+    participant OT as OTel / Audit
+
+    U->>MI: submit mission
+    MI->>PE: authorizeMission()
+    PE-->>MI: allow / deny / require-approval
+    MI->>MA: normalized MissionEnvelope
+    MA->>PA: generateTaskGraph()
+    PA-->>MA: TaskGraph
+    MA->>SA: validateConstraints(TaskGraph)
+    SA-->>MA: SafetyEnvelope
+    MA->>SB: createSwarmMission(fragment, SafetyEnvelope)
+    SB->>FS: initializeField()
+    SB->>SW: start workers with SwarmMission
+
+    loop decentralized adaptation
+        SW->>FS: queryField(local region)
+        SW->>SW: select action via ACO / PSO / RL policy
+        SW->>FS: propose field update (bounded, provenance)
+        FS-->>SW: updated local field (decay + diffusion)
+    end
+
+    SW-->>SB: candidate recommendations
+    SB-->>MA: SwarmRecommendationSet
+    MA->>TB: execute selected action(s)
+    TB->>PE: authorizeAction()
+
+    alt requires human approval
+        PE-->>AP: approval required
+        AP-->>TB: approved / denied (via Hermes messaging gateway)
+    end
+
+    TB->>TB: validate params / dry-run if available
+    TB-->>MA: ExecutionResult
+    MA->>MC: persistOutcome()
+    MC->>OT: memory write telemetry
+    FS->>OT: field telemetry
+    PE->>OT: decision telemetry
+    TB->>OT: action telemetry

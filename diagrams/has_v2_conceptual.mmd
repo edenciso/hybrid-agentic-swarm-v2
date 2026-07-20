@@ -1,0 +1,28 @@
+%% HAS v2 — conceptual view
+%% "Determinism as an envelope, emergence inside it."
+%% The three stacked layers are the data path; the arrows between them are
+%% the only coupling points; the guardrail band observes all three at once.
+
+flowchart TB
+    subgraph GOV["Observability & guardrails — cross-cutting"]
+        direction TB
+        OG["OpenTelemetry traces, metrics, logs<br/>OPA policy decisions · approvals<br/>invariant monitors · circuit breakers · replay"]
+    end
+
+    L1["<b>Deterministic orchestration — Hermes Agent</b><br/>plan · spawn · permissions · memory · gates · kill authority"]
+    L2["<b>Stigmergic substrate</b><br/>shared multi-channel pheromone field · decay + diffusion"]
+    L3["<b>Swarm-intelligence workers</b><br/>ACO · PSO · local RL agents"]
+
+    L1 -- "envelope + budgets" --> L2
+    L2 -- "telemetry + recommendations" --> L1
+    L2 -- "sense field" --> L3
+    L3 -- "deposit + reward" --> L2
+
+    L1 -.-> GOV
+    L2 -.-> GOV
+    L3 -.-> GOV
+
+    style L1 fill:#efece4,stroke:#5a5648,color:#3b3830
+    style L2 fill:#ddf0e7,stroke:#1d6b4f,color:#124b37
+    style L3 fill:#e4e2f7,stroke:#4a3fb5,color:#2f2a80
+    style GOV fill:#fbeed3,stroke:#9a6a12,color:#6e4a08

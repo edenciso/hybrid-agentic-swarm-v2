@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "has-v2"
+version = "2.0.0"
+description = "Hybrid Agentic Swarm (HAS) reference architecture v2 — Hermes Agent orchestration envelope, stigmergic substrate, swarm-intelligence workers, policy and observability planes"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["agents", "swarm-intelligence", "stigmergy", "aco", "pso", "hermes-agent", "multi-agent", "orchestration"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

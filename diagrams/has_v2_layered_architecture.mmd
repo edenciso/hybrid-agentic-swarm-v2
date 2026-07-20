@@ -1,0 +1,82 @@
+%% HAS v2 — layered reference architecture
+%% v2 change: the deterministic orchestration plane runs on Hermes Agent
+%% (Nous Research) instead of OpenClaw.
+
+flowchart TB
+    USER["User / Enterprise System / External Trigger"]
+
+    subgraph L1["Layer 1 — Deterministic orchestration via Hermes Agent"]
+        MIA["Mission Intake API"]
+        MOA["Master Orchestrator Agent"]
+        PLA["Planner Agent"]
+        SRA["Safety / Review Agent"]
+        MCA["Memory Curator Agent"]
+        ARC["Agent Registry & Capability Map"]
+        CRS["Context Router / Session Manager"]
+        TBE["Tool Broker / Execution Agents"]
+        HRT["Hermes Agent Runtime<br/>profiles · isolated subagents · skills-as-procedural-memory<br/>terminal backends: docker / modal / daytona / ssh<br/>Bitwarden secrets · per-task model overrides<br/>messaging gateway · promptware defense"]
+    end
+
+    subgraph L2["Layer 2 — Stigmergic coordination substrate"]
+        VPS["Virtual Pheromone Store<br/>intent · success · risk · congestion · cost<br/>trust · novelty · claimed · evidence"]
+        FUE["Field Update Engine<br/>deposit · reinforce · inhibit · saturate guard"]
+        DDE["Diffusion / Decay Engine"]
+        WDM["World Model / Digital Twin / Constraint Graph"]
+        FQA["Field Query API"]
+        EVB["Event Bus"]
+    end
+
+    subgraph L3["Layer 3 — Swarm intelligence workers"]
+        SMB["Swarm Mission Broker"]
+        SPOL["Swarm Policies<br/>ACO · PSO · Boids · MARL"]
+        SCW["Scout Workers"]
+        RTW["Router Workers"]
+        TNW["Tuner Workers"]
+        RPW["Repair Workers"]
+        STW["Sentinel Workers"]
+        RWE["Reward Engine<br/>local + team + difference reward<br/>hard-constraint penalties"]
+    end
+
+    subgraph L4["Layer 4 — Observability & guardrails"]
+        PDP["Policy Decision Point — OPA"]
+        APS["Approval Service<br/>human-in-the-loop via Hermes gateway"]
+        PEP["Policy Enforcement Points"]
+        OTL["OpenTelemetry SDK / Collector"]
+        ADD["Anomaly / Drift Detection<br/>field poisoning · premature convergence"]
+        ARS["Audit / Replay Store"]
+        CBR["Circuit Breakers — kill authority"]
+    end
+
+    USER --> MIA --> MOA
+    MOA --> PLA --> SRA
+    MOA --> ARC
+    MOA --> CRS
+    MOA --> HRT
+    MCA --> HRT
+    MOA --> SMB
+
+    SMB --> VPS
+    FUE --> VPS
+    VPS --> DDE --> WDM
+    VPS --> FQA
+    VPS --> EVB
+    EVB --> MOA
+
+    SPOL --> SCW & RTW & TNW & RPW & STW
+    SCW & RTW & TNW & RPW & STW --> RWE
+    SCW & RTW & TNW & RPW & STW --> FUE
+    FQA --> SCW & RTW & TNW & RPW & STW
+    SMB -- "SwarmRecommendation" --> MOA
+
+    MOA -- "authorizeAction" --> PDP
+    PDP --> APS
+    PDP --> PEP
+    PEP --> TBE
+    TBE --> HRT
+    FUE --> PEP
+    OTL --> ARS
+    OTL --> ADD --> CBR
+    CBR -. "freeze / quarantine / rollback" .-> SMB
+    L1 -.-> OTL
+    L2 -.-> OTL
+    L3 -.-> OTL
