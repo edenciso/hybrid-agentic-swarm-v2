@@ -102,4 +102,5 @@ You can prove properties of the envelope, not of the emergent behavior. Differen
 
 ## License
 
-MIT. Hermes Agent is a trademark of its respective owner; this project is an independent reference architecture and is not affiliated with Nous Research.
+Apache License 2.0 - 2026 Swarmode, LLC. All rights reserved.
+Hermes Agent is a trademark of its respective owner; this project is an independent reference architecture and is not affiliated with Nous Research.
